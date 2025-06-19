@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decide the Dates For Our Get-Together Party!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, hsl(270, 70%, 70%) 0%, hsl(330, 70%, 70%) 25%, hsl(260, 80%, 60%) 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-center;
+            margin-bottom: 2rem;
+        }
+
+        .school-image {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            margin: 0 auto 1rem;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .main-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .countdown-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .countdown-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-container, .responses-container {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.875rem;
+            color: #374151;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+
+        .date-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .date-option {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .date-option:hover {
+            border-color: #8b5cf6;
+            background-color: #f3e8ff;
+        }
+
+        .date-option.selected {
+            border-color: #8b5cf6;
+            background-color: #f3e8ff;
+        }
+
+        .checkbox {
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .date-option.selected .checkbox {
+            background-color: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+
+        .checkbox-check {
+            color: white;
+            font-weight: bold;
+            display: none;
+        }
+
+        .date-option.selected .checkbox-check {
+            display: block;
+        }
+
+        .date-info {
+            flex: 1;
+        }
+
+        .date-label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .date-description {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .date-emoji {
+            font-size: 1.5rem;
+            margin-left: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            color: white;
+            font-weight: bold;
+            padding: 1rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-item:nth-child(2) {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .stat-item:nth-child(3) {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .stat-number {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+        }
+
+        .responses-list {
+            max-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .response-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .response-item:hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .response-user {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 1.5rem;
+            height: 1.5rem;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .response-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .response-dates {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dates-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .date-badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        .response-note {
+            font-size: 0.75rem;
+            color: #6b7280;
+            background: #eff6ff;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .popular-dates {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .popular-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .popular-item {
+            text-align: center;
+        }
+
+        .medal {
+            width: 4rem;
+            height: 4rem;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .popular-date {
+            color: white;
+            font-weight: 600;
+        }
+
+        .popular-votes {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .empty-emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            max-width: 400px;
+            margin: 1rem;
+        }
+
+        .modal-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+
+        .modal-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.5rem;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-text {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-btn {
+            background: #8b5cf6;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .modal-btn:hover {
+            background: #7c3aed;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+            
+            .countdown-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .popular-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="https://content.jdmagicbox.com/comp/jalgaon/dc/9999px257.x257.100609142723.k1t7dc/catalogue/seth-l-n-s-high-school-jalgaon-ho-jalgaon-schools-bpu2xtp.jpg" 
+                 alt="ला. ना. शाळा" class="school-image">
+            
+            <h1 class="main-title">🎉 SSC-81 Legends Get-Together Party! 🎉</h1>
+            <p class="subtitle">Let's reunite and create amazing memories together! आपल्या गॅट-टुगेदरसाठी तुमच्या उपस्थितीची निकडीची आहे! 😉 योग्य तारीख निश्चित करण्यासाठी, तुम्हाला उपलब्ध असलेल्या सर्व तारखांवर **क्लिक** करा आणि तुमच्या प्रतिक्रिया नक्की नोंदवा. 🌟</p>
+        </div>
+
+        <!-- Countdown Timer -->
+        <div class="countdown-container">
+            <h2 class="countdown-title">⏰ Time Left to Submit</h2>
+            <div class="countdown-grid" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+            <p style="text-align: center; color: rgba(255,255,255,0.9); font-size: 0.875rem; margin-top: 0.75rem;">
+                Deadline: July 5, 2025 at 11:59 PM
+            </p>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Form Section -->
+            <div class="form-container">
+                <h2 class="section-title">📅 Pick Your Available Dates</h2>
+                
+                <form id="dateForm">
+                    <!-- Name Input -->
+                    <div class="form-group">
+                        <label class="form-label">👤 Your Name <span style="color: #ef4444;">*</span></label>
+                        <input type="text" id="name" class="form-input" 
+                               placeholder="Enter your awesome name such as Mohan Varde, Subhash Tilloo, Jayant Wani" required>
+                    </div>
+
+                    <!-- Date Selection -->
+                    <div class="form-group">
+                        <label class="form-label">📆 Available Dates (Select all that work for you)</label>
+                        <div class="date-options">
+                            <div class="date-option" data-date="2025-07-12">
+                                <div class="checkbox">
+                                    <span class="checkbox-check">✓</span>
+                                </div>
+                                <div class="date-info">
+                                    <div class="date-label">Saturday, July 12, 2025</div>
+                                    <div class="date-description">Weekend Fun! 🎈</div>
+                                </div>
+                                <div class="date-emoji">🌞</div>
+                            </div>
+                            <div class="date-option" data-date="2025-07-19">
+                                <div class="checkbox">
+                                    <span class="checkbox-check">✓</span>
+                                </div>
+                                <div class="date-info">
+                                    <div class="date-label">Saturday, July 19, 2025</div>
+                                    <div class="date-description">Another Great Weekend! 🎪</div>
+                                </div>
+                                <div class="date-emoji">🌈</div>
+                            </div>
+                            <div class="date-option" data-date="2025-07-26">
+                                <div class="checkbox">
+                                    <span class="checkbox-check">✓</span>
+                                </div>
+                                <div class="date-info">
+                                    <div class="date-label">Saturday, July 26, 2025</div>
+                                    <div class="date-description">Last Weekend of July! 🎆</div>
+                                </div>
+                                <div class="date-emoji">🎊</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="form-group">
+                        <label class="form-label">💬 Any Comments or Suggestions?</label>
+                        <textarea id="remarks" rows="3" class="form-textarea" 
+                                  placeholder="Share your thoughts, preferences, or fun ideas! 🎉"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">
+                        Submit My Response! 🚀
+                    </button>
+                </form>
+            </div>
+
+            <!-- Responses Display -->
+            <div class="responses-container">
+                <h2 class="section-title">👥 Friends' Responses</h2>
+
+                <!-- Summary Stats -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-july12">0</div>
+                        <div class="stat-label">July 12</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-july19">0</div>
+                        <div class="stat-label">July 19</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="stat-july26">0</div>
+                        <div class="stat-label">July 26</div>
+                    </div>
+                </div>
+
+                <!-- Responses List -->
+                <div class="responses-list" id="responsesList">
+                    <div class="empty-state">
+                        <div class="empty-emoji">🏃‍♂️💨</div>
+                        <p style="color: #6b7280;">Be the first one to respond!</p>
+                        <p style="color: #9ca3af; font-size: 0.875rem;">Your friends are waiting to see your availability</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popular Dates Section -->
+        <div class="popular-dates">
+            <h3 class="popular-title">🏆 Most Popular Dates</h3>
+            <div class="popular-grid" id="popularDates">
+                <div class="popular-item">
+                    <div class="medal">🥇</div>
+                    <div class="popular-date">July 12</div>
+                    <div class="popular-votes">0 votes</div>
+                </div>
+                <div class="popular-item">
+                    <div class="medal">🥈</div>
+                    <div class="popular-date">July 19</div>
+                    <div class="popular-votes">0 votes</div>
+                </div>
+                <div class="popular-item">
+                    <div class="medal">🥉</div>
+                    <div class="popular-date">July 26</div>
+                    <div class="popular-votes">0 votes</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p style="font-size: 0.875rem;">Made with ❤️ for our amazing school reunion</p>
+            <p style="font-size: 0.75rem; margin-top: 0.25rem;">Share this link with all your friends! 🤝</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-emoji">🎉</div>
+            <h3 class="modal-title">Response Submitted!</h3>
+            <p class="modal-text">Thank you! Your friends can now see your availability.</p>
+            <button class="modal-btn" onclick="closeModal()">Awesome! 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let responses = JSON.parse(localStorage.getItem('getTogetherResponses') || '[]');
+
+        // Date labels mapping
+        const dateLabels = {
+            '2025-07-12': 'July 12',
+            '2025-07-19': 'July 19',
+            '2025-07-26': 'July 26'
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCountdown();
+            initializeDateSelection();
+            initializeForm();
+            displayResponses();
+            updateStats();
+            updatePopularDates();
+        });
+
+        // Countdown timer
+        function initializeCountdown() {
+            const countdownDate = new Date('July 5, 2025 23:59:59').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = countdownDate - now;
+                
+                if (distance < 0) {
+                    document.querySelector('.countdown-container').innerHTML = `
+                        <div style="text-align: center;">
+                            <h2 style="font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: white; margin-bottom: 1rem;">⏰ Form Closed!</h2>
+                            <p style="color: rgba(255,255,255,0.9);">The submission deadline has passed.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        // Date selection functionality
+        function initializeDateSelection() {
+            const dateOptions = document.querySelectorAll('.date-option');
+            
+            dateOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+            });
+        }
+
+        // Form handling
+        function initializeForm() {
+            const form = document.getElementById('dateForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const remarks = document.getElementById('remarks').value.trim();
+                const selectedDates = Array.from(document.querySelectorAll('.date-option.selected'))
+                    .map(option => option.dataset.date);
+                
+                // Validation
+                if (!name) {
+                    alert('Please enter your name');
+                    return;
+                }
+                
+                if (selectedDates.length === 0) {
+                    alert('Please select at least one date');
+                    return;
+                }
+                
+                // Create response
+                const response = {
+                    id: Date.now(),
+                    name: name,
+                    dates: selectedDates,
+                    remarks: remarks || null,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Add to responses
+                responses.unshift(response);
+                localStorage.setItem('getTogetherResponses', JSON.stringify(responses));
+                
+                // Reset form
+                form.reset();
+                document.querySelectorAll('.date-option.selected').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Update displays
+                displayResponses();
+                updateStats();
+                updatePopularDates();
+                
+                // Show success modal
+                showModal();
+            });
+        }
+
+        // Display responses
+        function displayResponses() {
+            const responsesList = document.getElementById('responsesList');
+            
+            if (responses.length === 0) {
+                responsesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-emoji">🏃‍♂️💨</div>
+                        <p style="color: #6b7280;">Be the first one to respond!</p>
+                        <p style="color: #9ca3af; font-size: 0.875rem;">Your friends are waiting to see your availability</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            responsesList.innerHTML = responses.map(response => `
+                <div class="response-item">
+                    <div class="response-header">
+                        <div class="response-user">
+                            <div class="user-avatar">${response.name.charAt(0).toUpperCase()}</div>
+                            <span class="user-name">${response.name}</span>
+                        </div>
+                        <span class="response-time">${formatDate(response.timestamp)}</span>
+                    </div>
+                    
+                    <div class="response-dates">
+                        <span class="dates-label">Available:</span>
+                        ${response.dates.map(date => `
+                            <span class="date-badge">${dateLabels[date]}</span>
+                        `).join('')}
+                    </div>
+                    
+                    ${response.remarks ? `
+                        <div class="response-note">
+                            <strong>Note:</strong> ${response.remarks}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Update statistics
+        function updateStats() {
+            const counts = { '2025-07-12': 0, '2025-07-19': 0, '2025-07-26': 0 };
+            
+            responses.forEach(response => {
+                response.dates.forEach(date => {
+                    if (counts[date] !== undefined) {
+                        counts[date]++;
+                    }
+                });
+            });
+            
+            document.getElementById('stat-july12').textContent = counts['2025-07-12'];
+            document.getElementById('stat-july19').textContent = counts['2025-07-19'];
+            document.getElementById('stat-july26').textContent = counts['2025-07-26'];
+        }
+
+        // Update popular dates
+        function updatePopularDates() {
+            const counts = { '2025-07-12': 0, '2025-07-19': 0, '2025-07-26': 0 };
+            
+            responses.forEach(response => {
+                response.dates.forEach(date => {
+                    if (counts[date] !== undefined) {
+                        counts[date]++;
+                    }
+                });
+            });
+            
+            const sortedDates = Object.entries(counts)
+                .sort(([,a], [,b]) => b - a)
+                .map(([date, count]) => ({ date, count }));
+            
+            const medals = ['🥇', '🥈', '🥉'];
+            const popularGrid = document.getElementById('popularDates');
+            
+            popularGrid.innerHTML = sortedDates.map((item, index) => `
+                <div class="popular-item">
+                    <div class="medal">${medals[index]}</div>
+                    <div class="popular-date">${dateLabels[item.date]}</div>
+                    <div class="popular-votes">${item.count} vote${item.count !== 1 ? 's' : ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // Utility functions
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+            });
+        }
+
+        function showModal() {
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
